@@ -16,56 +16,55 @@ data <- subset(data,Date %in% c('1/2/2007','2/2/2007'))
 data$Date.Time <- strptime(paste(data$Date,data$Time),  
                            format='%d/%m/%Y %H:%M:%S',
                            tz='GMT')
-#Plotting 
 
-
+#all plotting procedures are in function to separate plotting and saving part of the code. 
+#Seems dev.copy() isnt a good method for making exact copies of plots. 
 plotting <- function(){ 
   par(mfrow=c(2,2))  
-  #1st subplot
-  plot(data$Time,
-       data$Global_active_power,
-       type='l',
-       main = "",
-       xlab="",
-       ylab="Global Active Power (kilowatts)",
-  )
-  #2nd sublot
-  plot(data$Date.Time,data$Voltage,
-       type='l',
-       main = "",
-       xlab="datetime",
-       ylab="Voltage",
-  )
-  
-  
-  #3d subplot
-  plot(data$Date.Time,data$Sub_metering_1,
-       type='l',
-       main = "",
-       xlab="",
-       ylab="Energy of sub metering",
-  )
-  
-  lines(data$Date.Time,data$Sub_metering_2,
-        col='red')
-  lines(data$Date.Time,data$Sub_metering_3,
-        col='blue')
-  legend('topright',
-         c("Sub_metering_1","Sub_metering_2","Sub_metering_3"),
-         col=c("black","red","blue"),
-         lty=1,
-         bty = "n"
-  )
-  
-  #4th subplot
-  plot(data$Date.Time,data$Global_reactive_power,
-       type='l',
-       main = "",
-       xlab="datetime",
-       ylab="Global_reactive_power",
-  )
-  
-  
+  #topright subplot
+  with(data, {
+    plot(Date.Time, Global_active_power,
+         type='l',
+         main = "",
+         xlab="",
+         ylab="Global Active Power (kilowatts)",
+    )
+    #topleft sublot
+    plot(Date.Time,Voltage,
+         type='l',
+         main = "",
+         xlab="datetime",
+         ylab="Voltage",
+    )
+    
+    
+    #bottom-right subplot
+    #making blank plot with appropriate axis ranges
+    plot(range(Date.Time),range(Sub_metering_1,Sub_metering_2,Sub_metering_3), 
+         type='n',
+         main = "",
+         xlab="",
+         ylab="Energy of sub metering")
+    lines(Date.Time,Sub_metering_1, col='black')
+    lines(Date.Time,Sub_metering_2, col='red')
+    lines(Date.Time,Sub_metering_3, col='blue')
+    
+    legend('topright',
+           c("Sub_metering_1","Sub_metering_2","Sub_metering_3"),
+           col=c("black","red","blue"),
+           lty=1,
+           bty = "n")
+            
+    
+    #bottom-left subplot
+    plot(Date.Time,Global_reactive_power,
+         type='l',
+         main = "",
+         xlab="datetime",
+         ylab="Global_reactive_power",
+    )
+    
+  })
 }
 #Saving plot
 png(filename="Plot4.png",

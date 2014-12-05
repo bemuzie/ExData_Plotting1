@@ -17,26 +17,24 @@ data$Date.Time <- strptime(paste(data$Date,data$Time),
                            format='%d/%m/%Y %H:%M:%S',
                            tz='GMT')
 
-#Plotting 
+#all plotting procedures are in function to separate plotting and saving part of the code. 
+#Seems dev.copy() isnt a good method for making exact copies of plots. 
 plotting <- function(){ 
-  
-  plot(data$Date.Time,data$Sub_metering_1,
-       type='l',
-       main = "",
-       xlab="",
-       ylab="Energy of sub metering",
-  )
-  
-  lines(data$Date.Time,data$Sub_metering_2,
-        col='red')
-  lines(data$Date.Time,data$Sub_metering_3,
-        col='blue')
-  legend('topright',
-         c("Sub_metering_1","Sub_metering_2","Sub_metering_3"),
-         col=c("black","red","blue"),
-         lty=1
-           )
-  
+  with(data,{
+    #making blank plot with appropriate axis ranges
+    plot(range(Date.Time),range(Sub_metering_1,Sub_metering_2,Sub_metering_3), 
+         type='n',
+         main = "",
+         xlab="",
+         ylab="Energy of sub metering")
+    lines(Date.Time,Sub_metering_1, col='black')
+    lines(Date.Time,Sub_metering_2, col='red')
+    lines(Date.Time,Sub_metering_3, col='blue')
+    legend('topright',
+           c("Sub_metering_1","Sub_metering_2","Sub_metering_3"),
+           col=c("black","red","blue"),
+           lty=1)
+  })
 }
 #Saving plot
 png(filename="Plot3.png",

@@ -17,13 +17,14 @@ data$Date.Time <- strptime(paste(data$Date,data$Time),
                       format='%d/%m/%Y %H:%M:%S',
                       tz='GMT')
 
-#Plotting
+#all plotting procedures are in function to separate plotting and saving part of the code. 
+#Seems dev.copy() isnt a good method for making exact copies of plots. 
 plotting <- function(){ 
-                        hist(data$Global_active_power,
-                             col='red',
-                             main = "Global Active Power",
-                             xlab="Global Active Power (kilowatts)",
-                             ylab="Frequency",
+                       hist(data$Global_active_power,
+                            col='red',
+                            main = "Global Active Power",
+                            xlab="Global Active Power (kilowatts)",
+                            ylab="Frequency",
                              )
                       }
 
